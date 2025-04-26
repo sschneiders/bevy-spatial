@@ -69,7 +69,7 @@ macro_rules! kdtree_impl {
                 loc: <$pt as SpatialPoint>::Vec,
                 k: usize,
             ) -> Vec<Self::ResultT> {
-                let _span = info_span!("k-nearest").entered();
+                
                 let p: $pt = loc.into();
 
                 self.tree
@@ -85,7 +85,6 @@ macro_rules! kdtree_impl {
                 loc: <$pt as SpatialPoint>::Vec,
                 distance: <$pt as SpatialPoint>::Scalar,
             ) -> Vec<Self::ResultT> {
-                let _span = info_span!("within-distance").entered();
 
                 let distance: <$pt as KdPoint>::Scalar = distance.into();
 

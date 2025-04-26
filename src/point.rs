@@ -25,7 +25,7 @@ pub trait SpatialPoint: Copy + Clone + PartialEq + Debug {
     /// The Scalar type of a vector, example: [`f32`], [`f64`]
     type Scalar: Scalar;
 
-    /// The vector type itself, for example [`Vec3`](bevy::prelude::Vec3)
+    /// The vector type itself, for example [`Vec3`]
     type Vec: Send + Sync + IntoSpatialPoint;
 
     /// The dimension of this vector, like [`typenum::U2`] [`typenum::U3`]

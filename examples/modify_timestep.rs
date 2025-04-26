@@ -95,7 +95,7 @@ fn move_to(
 /// Change the timestep for
 fn mouseclick(
     mouse_input: Res<ButtonInput<MouseButton>>,
-    mut text: Query<&mut Text>,
+    mut text: Single<&mut Text>,
     mut step: ResMut<TimestepLength<NearestNeighbour>>,
     mut other_duration: Local<Duration>,
 ) {
@@ -106,7 +106,7 @@ fn mouseclick(
     if mouse_input.just_pressed(MouseButton::Left) {
         let duration = step.get_duration();
         step.set_duration(*other_duration);
-        text.single_mut().0 = format!(
+        text.0 = format!(
             "Spatial Update Rate: {} ms",
             other_duration.as_millis()
         );

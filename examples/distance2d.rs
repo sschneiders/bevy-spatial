@@ -1,3 +1,4 @@
+use std::ops::Deref;
 use std::time::Duration;
 
 use bevy::{
@@ -33,7 +34,7 @@ fn main() {
                 .with_frequency(Duration::from_millis(1)),
         )
         .add_plugins(LogDiagnosticsPlugin::default())
-        .add_plugins(FrameTimeDiagnosticsPlugin)
+        .add_plugins(FrameTimeDiagnosticsPlugin::default())
         .insert_resource(Mouse2D { pos: Vec2::ZERO })
         .add_systems(Startup, setup)
         .add_systems(
@@ -94,13 +95,12 @@ struct Mouse2D {
 }
 
 fn update_mouse_pos(
-    window: Query<&Window, With<PrimaryWindow>>,
-    cam: Query<(&Camera, &GlobalTransform)>,
+    window: Single<&Window, With<PrimaryWindow>>,
+    camera: Single<(&Camera, &GlobalTransform)>,
     mut mouse: ResMut<Mouse2D>,
 ) {
-    let win = window.single();
-    let (cam, cam_t) = cam.single();
-    if let Some(w_pos) = win.cursor_position() {
+    let (cam, cam_t) = camera.deref();
+    if let Some(w_pos) = window.cursor_position() {
         if let Ok(pos) = cam.viewport_to_world_2d(cam_t, w_pos) {
             mouse.pos = pos;
         }
@@ -111,12 +111,10 @@ fn mouse(
     mut commands: Commands,
     mouse: Res<Mouse2D>,
     treeaccess: Res<NNTree>,
-    mut query: Query<&mut Transform, With<Cursor>>,
+    mut transform: Single<&mut Transform, With<Cursor>>,
     ms_buttons: Res<ButtonInput<MouseButton>>,
 ) {
     let use_mouse = ms_buttons.pressed(MouseButton::Left);
-
-    let mut transform = query.single_mut();
 
     if let Some((_pos, entity)) = treeaccess.nearest_neighbour(mouse.pos) {
         transform.translation = mouse.pos.extend(0.0); // I don't really know what this is here for
@@ -153,13 +151,11 @@ fn movement(mut query: Query<&mut Transform, With<NearestNeighbourComponent>>) {
 }
 
 fn collide_wall(
-    window: Query<&Window, With<PrimaryWindow>>,
+    window: Single<&Window, With<PrimaryWindow>>,
     mut query: Query<&mut Transform, With<NearestNeighbourComponent>>,
 ) {
-    let win = window.get_single().unwrap();
-
-    let w = win.width() / 2.0;
-    let h = win.height() / 2.0;
+    let w = window.width() / 2.0;
+    let h = window.height() / 2.0;
 
     for mut pos in &mut query {
         let [x, y] = pos.translation.xy().to_array();

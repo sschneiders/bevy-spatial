@@ -1,3 +1,4 @@
+use std::ops::Deref;
 use bevy::{
     diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin},
     math::vec2,
@@ -25,7 +26,7 @@ fn main() {
                 .with_frequency(Duration::from_secs(1))
                 .with_transform(TransformMode::Transform),
         )
-        .add_plugins(FrameTimeDiagnosticsPlugin)
+        .add_plugins(FrameTimeDiagnosticsPlugin::default())
         .add_plugins(LogDiagnosticsPlugin::default())
         .add_systems(Startup, setup)
         .add_systems(
@@ -64,13 +65,12 @@ fn setup(mut commands: Commands) {
 fn mouseclick(
     mut commands: Commands,
     mouse_input: Res<ButtonInput<MouseButton>>,
-    window: Query<&Window, With<PrimaryWindow>>,
-    cam: Query<(&Camera, &GlobalTransform)>,
+    window: Single<&Window, With<PrimaryWindow>>,
+    camera: Single<(&Camera, &GlobalTransform)>,
 ) {
-    let win = window.single();
-    let (cam, cam_t) = cam.single();
+    let (cam, cam_t) = camera.deref();
     if mouse_input.pressed(MouseButton::Left) {
-        if let Some(pos) = win.cursor_position() {
+        if let Some(pos) = window.cursor_position() {
             for xoff in -1..=1 {
                 for yoff in -1..=1 {
                     commands.spawn((

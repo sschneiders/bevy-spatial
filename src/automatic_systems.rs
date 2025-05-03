@@ -1,9 +1,9 @@
 use std::marker::PhantomData;
 
 use crate::{
+    SpatialAccess,
     point::{SpatialPoint, VecFromGlobalTransform, VecFromTransform},
     spatial_access::UpdateSpatialAccess,
-    SpatialAccess,
 };
 
 use bevy::{

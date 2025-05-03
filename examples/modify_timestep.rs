@@ -4,7 +4,7 @@ use bevy::color::palettes::css as csscolors;
 use bevy::prelude::*;
 
 use bevy_spatial::{
-    kdtree::KDTree2, AutomaticUpdate, SpatialAccess, SpatialStructure, TimestepLength,
+    AutomaticUpdate, SpatialAccess, SpatialStructure, TimestepLength, kdtree::KDTree2,
 };
 
 #[derive(Component, Default)]
@@ -106,10 +106,7 @@ fn mouseclick(
     if mouse_input.just_pressed(MouseButton::Left) {
         let duration = step.get_duration();
         step.set_duration(*other_duration);
-        text.0 = format!(
-            "Spatial Update Rate: {} ms",
-            other_duration.as_millis()
-        );
+        text.0 = format!("Spatial Update Rate: {} ms", other_duration.as_millis());
         *other_duration = duration;
     }
 }

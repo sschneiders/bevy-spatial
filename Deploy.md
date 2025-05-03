@@ -2,7 +2,7 @@
 2. build docs locally and check
    $ cargo doc --all-features --no-deps -p bevy_spatial
 3. make sure wasm works
-   $ cargo run --target wasm32-unknown-unknown --example distance2d --features kdtree --no-default-features --release
+   $ bevy run --example distance2d --release --no-default-features true --features kdtree web --open
 4. publish the crate
    $ cargo publish
 5. create github release

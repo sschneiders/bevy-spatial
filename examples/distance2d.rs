@@ -8,8 +8,8 @@ use bevy::{
     prelude::*,
     window::PrimaryWindow,
 };
-use bevy_spatial::{kdtree::KDTree2, SpatialAccess};
 use bevy_spatial::{AutomaticUpdate, SpatialStructure};
+use bevy_spatial::{SpatialAccess, kdtree::KDTree2};
 // marker for entities tracked by the KDTree
 #[derive(Component, Default)]
 struct NearestNeighbourComponent;

@@ -4,9 +4,9 @@ use bevy::prelude::*;
 use kd_tree::{KdPoint, KdTree as BaseKdTree, KdTreeN};
 
 use crate::{
+    TComp,
     point::SpatialPoint,
     spatial_access::{SpatialAccess, UpdateSpatialAccess},
-    TComp,
 };
 
 use std::marker::PhantomData;
@@ -14,7 +14,9 @@ use std::marker::PhantomData;
 use bevy::prelude::Resource;
 
 #[cfg(all(feature = "kdtree_rayon", target_arch = "wasm32"))]
-compile_error!("bevy-spatial feature \"kdtree_rayon\" is incompatible with target_arch = \"wasm32\" builds. Disable default-features and enable kdtree");
+compile_error!(
+    "bevy-spatial feature \"kdtree_rayon\" is incompatible with target_arch = \"wasm32\" builds. Disable default-features and enable kdtree"
+);
 
 macro_rules! kdtree_impl {
     ($pt:ty, $treename:ident) => {
@@ -69,7 +71,6 @@ macro_rules! kdtree_impl {
                 loc: <$pt as SpatialPoint>::Vec,
                 k: usize,
             ) -> Vec<Self::ResultT> {
-                
                 let p: $pt = loc.into();
 
                 self.tree
@@ -85,7 +86,6 @@ macro_rules! kdtree_impl {
                 loc: <$pt as SpatialPoint>::Vec,
                 distance: <$pt as SpatialPoint>::Scalar,
             ) -> Vec<Self::ResultT> {
-
                 let distance: <$pt as KdPoint>::Scalar = distance.into();
 
                 if self.tree.len() == 0 {
@@ -107,7 +107,7 @@ macro_rules! kdtree_impl {
                 data: impl Iterator<Item = (Self::Point, bool)>,
                 _: impl Iterator<Item = Entity>,
             ) {
-                #[cfg(feature = "kdtree_rayon")]
+                #[cfg(all(feature = "kdtree_rayon", not(target_arch = "wasm32")))]
                 let tree =
                     KdTreeN::par_build_by_ordered_float(data.map(|(p, _)| p).collect::<Vec<_>>());
                 #[cfg(any(not(feature = "kdtree_rayon"), target_arch = "wasm32"))]

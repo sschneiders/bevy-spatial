@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::{point::SpatialPoint, TComp};
+use crate::{TComp, point::SpatialPoint};
 
 // todo: change Point to impl IntoPoint?
 #[allow(clippy::module_name_repetitions)]

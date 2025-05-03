@@ -1,4 +1,3 @@
-use std::ops::Deref;
 use bevy::{
     diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin},
     math::vec2,
@@ -7,8 +6,9 @@ use bevy::{
     window::PrimaryWindow,
 };
 use bevy_spatial::{
-    kdtree::KDTree3, AutomaticUpdate, SpatialAccess, SpatialStructure, TransformMode,
+    AutomaticUpdate, SpatialAccess, SpatialStructure, TransformMode, kdtree::KDTree3,
 };
+use std::ops::Deref;
 use std::time::Duration;
 
 #[derive(Component, Default)]

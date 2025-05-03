@@ -1,11 +1,11 @@
-use std::ops::Deref;
 use bevy::{
     color::palettes::css as csscolors,
     diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin},
     prelude::*,
     window::PrimaryWindow,
 };
-use bevy_spatial::{kdtree::KDTree3, AutomaticUpdate, SpatialAccess};
+use bevy_spatial::{AutomaticUpdate, SpatialAccess, kdtree::KDTree3};
+use std::ops::Deref;
 
 #[derive(Component)]
 struct NearestNeighbourComponent;
@@ -52,7 +52,7 @@ fn setup(
 
     ambient_light.color = Color::WHITE;
     ambient_light.brightness = 500.;
-    
+
     commands.spawn((
         Camera3d::default(),
         Transform::from_xyz(0.0, 100.0, 900.0).looking_at(Vec3::ZERO, Vec3::Y),

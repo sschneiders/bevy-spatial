@@ -6,10 +6,10 @@ use bevy::{
 };
 
 use crate::{
+    TComp,
     automatic_systems::{AutoGT, AutoT, TransformMode},
     kdtree::{KDTree2, KDTree3, KDTree3A},
-    timestep::{on_timer_changeable, TimestepLength},
-    TComp,
+    timestep::{TimestepLength, on_timer_changeable},
 };
 
 /// Default set for spatial datastructure updates. Can be overridden using [`AutomaticUpdate::with_set()`](crate::AutomaticUpdate)
@@ -141,7 +141,9 @@ impl<Comp, Set: SystemSet, Schedule: ScheduleLabel + Clone> AutomaticUpdate<Comp
     }
 }
 
-impl<Comp: TComp, Set: SystemSet + Copy, Schedule: ScheduleLabel + Clone> Plugin for AutomaticUpdate<Comp, Set, Schedule> {
+impl<Comp: TComp, Set: SystemSet + Copy, Schedule: ScheduleLabel + Clone> Plugin
+    for AutomaticUpdate<Comp, Set, Schedule>
+{
     fn build(&self, app: &mut App) {
         app.insert_resource(TimestepLength(self.frequency, PhantomData::<Comp>))
             .configure_sets(
@@ -178,6 +180,6 @@ impl<Comp: TComp, Set: SystemSet + Copy, Schedule: ScheduleLabel + Clone> Plugin
                     AutoGT::<KDTree3A<Comp>>::build(app, self.schedule.clone(), self.set);
                 }
             },
-        };
+        }
     }
 }
